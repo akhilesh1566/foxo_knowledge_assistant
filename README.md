@@ -1,4 +1,4 @@
-# Autogen Knowledge Assistant - Local Retrieval AI Agent (Proof of Concept)
+# Autogen Knowledge Assistant - Local Retrieval AI Agent
 
 ## Overview
 
