@@ -2,28 +2,32 @@
 import os
 from dotenv import load_dotenv
 
-# Load environment variables from .env file
 load_dotenv()
 
-# Google API Key
+# --- API Keys ---
 GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY") # Add this
 
 if not GOOGLE_API_KEY:
-    raise ValueError("GOOGLE_API_KEY not found in .env file. Please set it up.")
+    print("WARNING: GOOGLE_API_KEY not found. RAG tool might fail if it uses Gemini LLM internally.")
+if not OPENAI_API_KEY:
+    raise ValueError("OPENAI_API_KEY not found in .env file. Needed for AutoGen Assistant.")
 
-# Define model names (these can be overridden in specific modules if needed)
-# For embeddings, "models/embedding-001" is standard for google-generativeai SDK.
-# For older models, it might be "text-embedding-004" but the newer is preferred.
+# --- Model Names ---
 GEMINI_EMBEDDING_MODEL = "models/embedding-001"
+GEMINI_CHAT_MODEL_FOR_RAG = "gemini-2.0-flash-001" # Used *inside* the RAG tool
 
-# For chat/generation, "gemini-pro" is a good default.
-# "gemini-1.0-pro" is also common.
-# "gemini-1.5-pro-latest" is newer but might have different availability/pricing.
-GEMINI_CHAT_MODEL = "gemini-pro"
+# OpenAI Model for AutoGen Assistant Agent
+OPENAI_MODEL_FOR_ASSISTANT = "gpt-3.5-turbo-0125" # or "gpt-4-turbo-preview"
 
-# ChromaDB settings
+# --- ChromaDB Settings ---
 CHROMA_PERSIST_DIRECTORY = "vector_store"
-CHROMA_COLLECTION_NAME = "foxo_docs_gemini"
+CHROMA_COLLECTION_NAME = "foxo_docs_gemini" # Sticking with Gemini in name for embeddings
 
-# Print a confirmation that the key is loaded (optional, for debugging Phase 0)
-# print(f"Config loaded. GOOGLE_API_KEY available: {bool(GOOGLE_API_KEY)}")
+# --- AutoGen Configuration for Assistant (OpenAI) ---
+AUTOGEN_OPENAI_CONFIG_LIST = [
+    {
+        "model": OPENAI_MODEL_FOR_ASSISTANT,
+        "api_key": OPENAI_API_KEY,
+    }
+]
