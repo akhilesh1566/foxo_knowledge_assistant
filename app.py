@@ -1,4 +1,3 @@
-
 import streamlit as st
 import os
 import json
@@ -8,7 +7,7 @@ from src.autogen_manager import get_autogen_agents
 
 # --- Page Configuration ---
 st.set_page_config(
-    page_title="Autogen Knowledge Assistant (Multi-Tool)", # Updated title
+    page_title="FOXO Knowledge Assistant (Multi-Tool)", # Updated title to match project
     page_icon="🦊",
     layout="wide"
 )
@@ -34,7 +33,8 @@ def initialize_autogen_agents_for_app():
                      st.session_state.display_chat_messages.append({
                         "role": "assistant", 
                         "name": st.session_state.assistant_agent.name if st.session_state.assistant_agent else "Assistant",
-                        "content": "Hello! I am the Autogen Multi-Tool Assistant. I can search documents or perform calculations. How can I help?"
+                        # Updated initial greeting slightly
+                        "content": "Hello! I am the FOXO Multi-Tool Assistant. I can search documents, perform calculations, or search the web. How can I help?"
                     })
                 st.success("Knowledge Assistant initialized!")
             except Exception as e:
@@ -59,7 +59,6 @@ def display_message_in_ui(msg_data):
         if function_call_details:
             func_name = function_call_details.get("name")
             try:
-                # Arguments are a JSON string, parse for prettier display
                 func_args_str = function_call_details.get("arguments", "{}")
                 func_args_dict = json.loads(func_args_str)
                 func_args_pretty = json.dumps(func_args_dict, indent=2)
@@ -78,14 +77,14 @@ def display_message_in_ui(msg_data):
         elif content_from_msg and str(content_from_msg).strip():
             processed_content = str(content_from_msg)
             if processed_content.rstrip().endswith("TERMINATE"):
-                processed_content = processed_content.rstrip()[:-9].rstrip()
+                processed_content = processed_content.rstrip()[:-9].rstrip() 
             
             if processed_content.strip(): 
                  st.markdown(f"{display_header}\n{processed_content}")
 
 # --- Main Application ---
-st.title("🦊 Autogen Knowledge Assistant")
-st.caption("Multi-Tool: Document Q&A & Calculator") # Updated caption
+st.title("🦊 FOXO Knowledge Assistant") # Changed from "Autogen" to "FOXO"
+st.caption("Multi-Tool: Document Q&A, Calculator & Web Search") # Added Web Search
 
 if not OPENAI_API_KEY:
     st.error("🚨 OPENAI_API_KEY is not configured!")
@@ -95,7 +94,6 @@ if not OPENAI_API_KEY:
 
 # --- Sidebar for Ingestion ---
 with st.sidebar:
-
     st.header("📄 Document Management")
     vector_store_exists = os.path.exists(os.path.join("vector_store", "chroma.sqlite3"))
     
@@ -105,10 +103,11 @@ with st.sidebar:
     elif not vector_store_exists and not st.session_state.ingestion_done_first_time : 
         st.warning("Knowledge base not found. Please ingest documents if needed.")
 
-    if st.button("🔄 Ingest/Re-Ingest Documents", help="Clears existing knowledge base and re-processes PDFs from the 'data' folder."):
+    if st.button("🔄 Ingest/Re-Ingest Documents", help="Clears existing knowledge base and re-processes documents from the 'data' folder."): # Updated help text
         data_folder = "data"
-        if not os.path.exists(data_folder) or not any(f.lower().endswith(".pdf") for f in os.listdir(data_folder)):
-            st.error(f"No PDF files found in the '{data_folder}' directory. Please add some PDF documents there.")
+        # Updated file check to include .txt and .md
+        if not os.path.exists(data_folder) or not any(f.lower().endswith((".pdf", ".txt", ".md")) for f in os.listdir(data_folder)):
+            st.error(f"No PDF, TXT, or MD files found in the '{data_folder}' directory. Please add some documents there.") # Updated message
         else:
             with st.spinner("Processing documents... This may take a few minutes."):
                 try:
@@ -122,7 +121,7 @@ with st.sidebar:
                     st.error(f"An error occurred during ingestion: {e}")
                     st.exception(e)
     st.markdown("---")
-    st.caption("Place PDF files in the 'data' folder.")
+    st.caption("Place PDF, TXT, or MD files in the 'data' folder.") # Updated caption
 
 
 # --- Initialize AutoGen Agents ---
@@ -136,7 +135,7 @@ for msg in st.session_state.display_chat_messages:
     display_message_in_ui(msg)
 
 # --- User Input and Chat Logic ---
-if prompt := st.chat_input("Ask about documents or calculate something..."): # Updated placeholder
+if prompt := st.chat_input("Ask about documents, calculate, or search the web..."): # Updated placeholder
     st.session_state.display_chat_messages.append({"role": "user", "name": "User", "content": prompt})
     with st.chat_message("user"):
         st.markdown(prompt)
@@ -155,26 +154,23 @@ if prompt := st.chat_input("Ask about documents or calculate something..."): # U
             if conversation_this_turn:
                 new_messages_to_add_to_display = []
                 for autogen_msg_data in conversation_this_turn:
-                    # Avoid re-displaying the user's initial prompt if AutoGen includes it as the first message
                     if autogen_msg_data.get("role") == "user" and autogen_msg_data.get("content") == prompt:
-                        if not new_messages_to_add_to_display: # Only skip if it's the very first message
+                        if not new_messages_to_add_to_display: 
                             continue
                     
-                    # Prepare message for Streamlit display
                     msg_for_streamlit = {
-                        "role": autogen_msg_data.get("role", "assistant"), # Default to assistant
+                        "role": autogen_msg_data.get("role", "assistant"), 
                         "name": autogen_msg_data.get("name", autogen_msg_data.get("role")),
                         "content": autogen_msg_data.get("content"),
                         "function_call": autogen_msg_data.get("tool_calls") or autogen_msg_data.get("function_call")
                     }
                     new_messages_to_add_to_display.append(msg_for_streamlit)
                 
-                # Extend the display_chat_messages only with new messages from this turn
                 st.session_state.display_chat_messages.extend(new_messages_to_add_to_display)
-            else: # Should not happen if initiate_chat ran, but as a fallback
+            else: 
                  st.session_state.display_chat_messages.append({
                     "role": "assistant", 
-                    "name": assistant.name, 
+                    "name": assistant.name if assistant else "Assistant", 
                     "content": "(No response from assistant for this turn.)"
                 })
             

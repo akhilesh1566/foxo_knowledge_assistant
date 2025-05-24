@@ -1,0 +1,17 @@
+# Company: Example Inc.
+# Location: New Tehri, Uttarakhand
+# Date: May 24, 2025
+
+# General Policy Guidelines:
+# - All employees are expected to adhere to the company's code of conduct.
+# - Confidential information should be treated with utmost care.
+# - No discrimination or harassment of any kind is permitted.
+
+# Testing Guidelines (Example):
+# - Test data should be representative of real-world scenarios.
+# - Test cases should be clearly documented and verifiable.
+# - Test results should be thoroughly analyzed and documented.
+
+# Contact Information:
+# - HR: hr@exampleinc.com
+# - IT: it@exampleinc.com
