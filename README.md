@@ -160,7 +160,6 @@ Integrate safer math parsers or tools like Wolfram Alpha.
 Use more specialized search APIs (e.g., news APIs, academic search).
 Add tools for code execution (with appropriate sandboxing), interacting with calendars, or sending emails.
 Sophisticated Agent Planning: Explore AutoGen's GroupChat or create a dedicated "Planner Agent" to decompose complex tasks and coordinate multiple specialized agents.
-Support More Document Types: Add ingestion for .txt, .md, .docx, .pptx, etc.
 Improved Context Management: Implement more advanced strategies for managing conversation history and context windows, especially for long interactions.
 User Feedback Mechanism: Allow users to rate answers or correct the agent's tool choices.
 
