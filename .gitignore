@@ -172,3 +172,33 @@ cython_debug/
 
 # PyPI configuration file
 .pypirc
+
+
+# .gitignore
+
+# Environment
+venv/
+.env
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# IDE / Editor specific
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Vector store data (can get large)
+vector_store/chroma.sqlite3 # Or any other files Chroma might generate directly here
+vector_store/* # More general if Chroma puts many files/folders in its persist_path
+
+# Streamlit
+.streamlit/
+
+# OS specific
+.DS_Store
+Thumbs.db

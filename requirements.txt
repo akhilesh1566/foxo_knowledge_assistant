@@ -1,0 +1,26 @@
+# requirements.txt
+
+# Core LLM and Google Cloud
+google-generativeai~=0.4.0
+python-dotenv~=1.0.0
+
+# LangChain components
+langchain~=0.1.12
+langchain-core~=0.1.32
+langchain-google-genai~=0.0.9
+langchain-community~=0.0.28
+
+# Vector Database
+chromadb~=0.4.24
+
+# PDF Processing
+PyMuPDF~=1.23.26 # fitz
+
+# Multi-agent framework
+pyautogen~=0.2.20
+
+# UI (Optional for now, but good to have in requirements)
+streamlit~=1.31.0
+
+# Other utilities if needed by LangChain or others
+tiktoken~=0.5.2 # often a LangChain dependency for token counting, even if not OpenAI
