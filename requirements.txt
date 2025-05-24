@@ -24,3 +24,4 @@ streamlit~=1.31.0
 
 # Other utilities if needed by LangChain or others
 tiktoken~=0.5.2 # often a LangChain dependency for token counting, even if not OpenAI
+tavily-python

@@ -7,11 +7,13 @@ load_dotenv()
 # --- API Keys ---
 GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY") # Add this
-
+TAVILY_API_KEY = os.getenv("TAVILY_API_KEY")
 if not GOOGLE_API_KEY:
     print("WARNING: GOOGLE_API_KEY not found. RAG tool might fail if it uses Gemini LLM internally.")
 if not OPENAI_API_KEY:
     raise ValueError("OPENAI_API_KEY not found in .env file. Needed for AutoGen Assistant.")
+if not TAVILY_API_KEY:
+    print("WARNING: TAVILY_API_KEY not found. Web search tool will not work.") # Can be optional
 
 # --- Model Names ---
 GEMINI_EMBEDDING_MODEL = "models/embedding-001"
