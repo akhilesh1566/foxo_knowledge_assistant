@@ -1,7 +1,7 @@
-# app.py
+
 import streamlit as st
 import os
-import json # For safely parsing arguments if needed, though AutoGen handles it
+import json
 from src.config import OPENAI_API_KEY 
 from ingest import main as run_ingestion 
 from src.autogen_manager import get_autogen_agents 
@@ -47,11 +47,9 @@ def display_message_in_ui(msg_data):
     role_from_msg = msg_data.get("role", "system").lower()
     agent_name_from_msg = msg_data.get("name", role_from_msg)
     content_from_msg = msg_data.get("content", "")
-    # AutoGen message structure for function calls:
-    # msg = {'role': 'assistant', 'content': None, 'function_call': {'name': '...', 'arguments': '{"query": "..."}'}}
-    # msg = {'role': 'function', 'name': 'function_name', 'content': 'result_string'}
-    function_call_details = msg_data.get("function_call") # From assistant, requesting a call
-    is_function_result = role_from_msg == "function" # From UserProxy, giving result
+    
+    function_call_details = msg_data.get("function_call") 
+    is_function_result = role_from_msg == "function" 
 
     streamlit_display_role = "user" if role_from_msg == "user" else "assistant"
 
@@ -75,21 +73,15 @@ def display_message_in_ui(msg_data):
                 st.markdown(f"{display_header}\n{tool_info}")
 
         elif is_function_result:
-            # For function results, the 'name' field of the message IS the function name
             st.markdown(f"⚙️ **Result from `{agent_name_from_msg}`**:\n```text\n{str(content_from_msg)}\n```")
         
         elif content_from_msg and str(content_from_msg).strip():
-            # Handle TERMINATE: don't display the word itself in the UI if it ends the message
             processed_content = str(content_from_msg)
             if processed_content.rstrip().endswith("TERMINATE"):
-                processed_content = processed_content.rstrip()[:-9].rstrip() # Remove "TERMINATE" and trailing spaces
+                processed_content = processed_content.rstrip()[:-9].rstrip()
             
-            if processed_content.strip(): # Display if there's anything left
+            if processed_content.strip(): 
                  st.markdown(f"{display_header}\n{processed_content}")
-            # If only "TERMINATE" was there and nothing else, it might display an empty bubble from this agent, which is fine.
-        # else:
-            # Optionally display a placeholder for empty messages if desired
-            # st.markdown(f"{display_header}\n_(No textual content in this message)_")
 
 # --- Main Application ---
 st.title("🦊 Autogen Knowledge Assistant")
@@ -103,7 +95,7 @@ if not OPENAI_API_KEY:
 
 # --- Sidebar for Ingestion ---
 with st.sidebar:
-    # ... (Sidebar Ingestion logic remains the same as your last working version) ...
+
     st.header("📄 Document Management")
     vector_store_exists = os.path.exists(os.path.join("vector_store", "chroma.sqlite3"))
     
@@ -152,7 +144,6 @@ if prompt := st.chat_input("Ask about documents or calculate something..."): # U
     with st.spinner(f"{assistant.name} is working..."):
         try:
             user_proxy.reset() 
-            # assistant.reset() # Optional
 
             user_proxy.initiate_chat(
                 assistant,

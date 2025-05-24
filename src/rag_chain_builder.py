@@ -1,4 +1,4 @@
-# src/rag_chain_builder.py
+
 from langchain_google_genai import ChatGoogleGenerativeAI, GoogleGenerativeAIEmbeddings
 from langchain_community.vectorstores import Chroma
 from langchain_core.output_parsers import StrOutputParser
@@ -88,11 +88,6 @@ def get_rag_chain(
     vector_store = get_vector_store_instance()
     retriever = vector_store.as_retriever(search_kwargs={"k": k_retriever})
 
-    # --- RAG Prompt Template ---
-    # Gemini models often work well with clear instructions and distinct roles,
-    # though "System" messages might be converted to "human" role by default
-    # by `convert_system_message_to_human=True`.
-    # We are instructing it to cite from the *provided context*.
     template = """
 You are an AI assistant for answering questions based on the provided context.
 Your task is to synthesize an answer from the retrieved document snippets.
@@ -137,8 +132,7 @@ ANSWER:
           }
     )
     
-    # A slightly different way to structure if you want to ensure all parts are explicitly assigned
-    # This version is more verbose but can be clearer for debugging step-by-step
+    
     chain_components = {
         "context_docs": itemgetter("question") | retriever,
         "question": itemgetter("question"), # Pass the original question through
@@ -156,10 +150,10 @@ ANSWER:
                 | StrOutputParser()
             )
           )
-        # Ensure final output dict has desired keys in order (optional, but nice)
+        
         | (lambda x: {"question": x["question"], "context_docs": x["context_docs"], "answer": x["answer"]})
     )
-    # Using the second, more explicit chain structure
+    
     return rag_chain_alternative
 
 
@@ -174,12 +168,7 @@ if __name__ == '__main__':
             rag_chain_instance = get_rag_chain() 
             print("RAG chain instance created successfully.")
 
-            # Example question - **adjust this based on content in your PDFs**
-            # For "Global-AI-Policy-V1.pdf" or "ITPOLICYFINAL.pdf" you might ask:
-            # query = "What is the company's policy on AI usage?"
-            # query = "How should employees handle sensitive data?"
-            # query = "What are the guidelines for remote work?"
-            query = "What is the policy on acceptable use of IT resources?" # Generic IT policy q
+            query = "What is the policy on acceptable use of IT resources?"
 
             print(f"\nInvoking RAG chain with question: '{query}'")
             result = rag_chain_instance.invoke({"question": query})

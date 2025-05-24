@@ -1,4 +1,4 @@
-# test_rag.py
+
 import os
 from src.rag_chain_builder import get_rag_chain
 from src.config import GOOGLE_API_KEY
@@ -11,7 +11,7 @@ def run_rag_test():
 
     print("Initializing RAG chain...")
     try:
-        rag_chain = get_rag_chain() # Uses default models from config
+        rag_chain = get_rag_chain() 
         print("RAG chain initialized successfully.")
     except Exception as e:
         print(f"Failed to initialize RAG chain: {e}")
@@ -19,20 +19,10 @@ def run_rag_test():
         traceback.print_exc()
         return
 
-    # --- Ask Questions ---
-    # Try questions relevant to the content of your PDFs.
-    # Examples (you'll need to adjust these based on your actual PDF content):
-    # From "Global-AI-Policy-V1.pdf" (if it discusses ethical AI, data usage, etc.)
-    # questions = [
-    # "What are the ethical considerations for using AI according to the policy?",
-    # "How should employees handle data when developing AI systems?"
-    # ]
-
-    # From "ITPOLICYFINAL.pdf" (if it discusses password rules, internet usage, etc.)
     questions = [
         "What is the company's policy on acceptable use of IT resources?",
-        "How often should passwords be changed?", # If your IT policy mentions this
-        "Are personal devices allowed on the company network?" # If your IT policy mentions this
+        "When Third Party and Outsourcing Services Contract shall be awarded??", 
+        "When does the Incident Response Team come in picture??" 
     ]
     
     # A question likely not in the documents, to test the "I don't know" response

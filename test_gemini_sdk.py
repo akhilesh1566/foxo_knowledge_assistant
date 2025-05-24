@@ -1,4 +1,4 @@
-# test_gemini_sdk.py
+
 import google.generativeai as genai
 from src.config import GOOGLE_API_KEY
 
@@ -9,26 +9,15 @@ try:
         genai.configure(api_key=GOOGLE_API_KEY)
 
         print("Attempting to list models...")
-        # List available models (a simple, non-quota-intensive call)
+
         model_count = 0
         for m in genai.list_models():
-            # Typically, you'd check if 'generateContent' is supported for a specific model.
-            # For this test, just listing them is enough.
-            # print(f"Model: {m.name}")
             model_count += 1
 
         if model_count > 0:
             print(f"SUCCESS: Successfully listed {model_count} models using Google Generative AI SDK.")
         else:
             print("WARNING: Listed 0 models. This might be okay if your API key has restrictions, or it might indicate an issue.")
-
-        # Optional: Try a very simple generation (uses quota)
-        # print("\nAttempting a simple text generation with gemini-pro...")
-        # model = genai.GenerativeModel('gemini-pro')
-        # response = model.generate_content("Tell me a fun fact about Python programming language.", request_options={'timeout': 60})
-        # print("Response from Gemini Pro:")
-        # print(response.text)
-        # print("SUCCESS: Simple text generation successful.")
 
 except Exception as e:
     print(f"ERROR during Google Generative AI SDK test: {e}")

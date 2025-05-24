@@ -1,4 +1,4 @@
-# src/vector_store_manager.py
+
 from langchain_google_genai import GoogleGenerativeAIEmbeddings
 from langchain_community.vectorstores import Chroma
 import chromadb # For persistent client
@@ -22,7 +22,7 @@ def get_embedding_function():
     return GoogleGenerativeAIEmbeddings(
         model=GEMINI_EMBEDDING_MODEL,
         google_api_key=GOOGLE_API_KEY
-        # task_type="retrieval_document" # Optional: specify task type
+
     )
 
 def create_or_get_vector_store(
@@ -98,25 +98,25 @@ if __name__ == '__main__':
         ]
         
         print("\nAttempting to create a new vector store (test_collection)...")
-        # Use a different collection name for direct testing to avoid overwriting main one
+        
         test_collection_name = "test_foxo_collection"
         vs = create_or_get_vector_store(
             documents=test_docs, 
             embedding_function=test_embedding_function,
             collection_name=test_collection_name,
-            recreate=True # Ensure clean state for test
+            recreate=True 
         )
         
         # Verify count in the created collection
         chroma_client = chromadb.PersistentClient(path=CHROMA_PERSIST_DIRECTORY)
-        collection = chroma_client.get_collection(name=test_collection_name, embedding_function=test_embedding_function.embed_documents) # embed_documents needed by raw client
+        collection = chroma_client.get_collection(name=test_collection_name, embedding_function=test_embedding_function.embed_documents) 
         count = collection.count()
         print(f"Number of items in '{test_collection_name}': {count}")
         assert count == len(test_docs), "Item count in test collection mismatch!"
 
         print("\nAttempting to load the existing vector store (test_collection)...")
         vs_loaded = create_or_get_vector_store(
-            embedding_function=test_embedding_function, # No documents, so it should load
+            embedding_function=test_embedding_function, 
             collection_name=test_collection_name
         )
         
@@ -134,10 +134,6 @@ if __name__ == '__main__':
                 print("No results found for similarity search.")
         
         print("\nVector store manager test completed successfully.")
-        
-        # Optional: cleanup test collection
-        # persistent_client.delete_collection(name=test_collection_name)
-        # print(f"Cleaned up test collection: {test_collection_name}")
 
     except Exception as e:
         print(f"Error during vector_store_manager.py test: {e}")

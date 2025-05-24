@@ -1,18 +1,8 @@
 # src/autogen_manager.py
 import autogen
 import json
-# typing.List might not be needed if not used elsewhere now
-# from typing import List
-
-# --- REMOVE AutoGen Model Client Registration for LangchainLLM ---
-# from autogen.oai.client import OpenAIWrapper 
-# from autogen.oai.llm_utils import LangchainLLM 
-# OpenAIWrapper.register_model_client(model_client_id="LangchainLLM", client_class=LangchainLLM)
-# print("INFO: LangchainLLM registration lines removed.") 
-# --- End REMOVE ---
 
 
-# Config now directly uses OPENAI_API_KEY and the OpenAI model name
 from .config import OPENAI_API_KEY, AUTOGEN_OPENAI_CONFIG_LIST 
 from .autogen_tools import query_internal_knowledge_base, simple_calculator, perform_web_search
 
@@ -22,7 +12,7 @@ user_proxy_agent = None
 def get_autogen_agents():
     global assistant_agent, user_proxy_agent
     if assistant_agent is None or user_proxy_agent is None:
-        print("Initializing AutoGen agents (Multi-Tool: RAG + Calc + WebSearch)...") # Updated
+        print("Initializing AutoGen agents (Multi-Tool: RAG + Calc + WebSearch)...") 
         
         llm_config_assistant = {
             "cache_seed": None, 
@@ -30,7 +20,7 @@ def get_autogen_agents():
             "functions": [ # Define ALL available functions
                 {
                     "name": "query_internal_knowledge_base",
-                    # ... (description and parameters as before) ...
+                    
                     "description": "Queries internal company PDF documents for specific company information.",
                     "parameters": {
                         "type": "object",
@@ -40,7 +30,7 @@ def get_autogen_agents():
                 },
                 {
                     "name": "simple_calculator",
-                    # ... (description and parameters as before) ...
+                    
                     "description": "Evaluates basic arithmetic expressions.",
                      "parameters": {
                         "type": "object",
@@ -48,7 +38,7 @@ def get_autogen_agents():
                         "required": ["expression"]
                     }
                 },
-                { # --- ADDED WEB SEARCH TOOL SCHEMA ---
+                { 
                     "name": "perform_web_search",
                     "description": "Performs a web search to find up-to-date information, current events, or general knowledge not found in local documents.",
                     "parameters": {
@@ -66,7 +56,7 @@ def get_autogen_agents():
         }
         
         assistant_agent = autogen.AssistantAgent(
-            name="KnowledgeExplorerAssistant", # Updated name
+            name="KnowledgeExplorerAssistant", 
             system_message=(
                 "You are a helpful AI assistant with access to three tools: "
                 "1. 'query_internal_knowledge_base': Use for questions about internal company documents (policies, product specs). "
@@ -94,13 +84,13 @@ def get_autogen_agents():
             function_map={ 
                 "query_internal_knowledge_base": query_internal_knowledge_base,
                 "simple_calculator": simple_calculator,
-                "perform_web_search": perform_web_search # <-- ADDED MAPPING
+                "perform_web_search": perform_web_search 
             }
         )
-        print("AutoGen agents initialized (RAG + Calc + WebSearch).") # Clarified print
+        print("AutoGen agents initialized (RAG + Calc + WebSearch).") 
     return assistant_agent, user_proxy_agent
 
-# The if __name__ == "__main__": block remains the same.
+
 if __name__ == "__main__":
     try:
         # We need OPENAI_API_KEY for this test scenario as Assistant uses OpenAI
@@ -142,7 +132,7 @@ if __name__ == "__main__":
                     assistant,
                     message=query_text,
                 )
-                last_message = user_proxy.last_message(assistant) # Get the last message this agent received from the assistant
+                last_message = user_proxy.last_message(assistant) 
                 print(f"Assistant's final reply for '{query_text}':\n{last_message.get('content') if last_message else 'No final reply found.'}")
                 print("--- End of Test Query ---")
 

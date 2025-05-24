@@ -1,11 +1,9 @@
-# ingest.py
+
 import os
 from src.document_processor import load_pdfs, chunk_documents
 from src.vector_store_manager import create_or_get_vector_store, get_embedding_function
-from src.config import CHROMA_COLLECTION_NAME # Using the main collection name
+from src.config import CHROMA_COLLECTION_NAME 
 
-# Define the path to your PDF data
-# Assumes 'data' folder is in the same directory as ingest.py
 DATA_PATH = "data"
 
 def main():
@@ -43,15 +41,13 @@ def main():
 
     # --- 4. Create or update vector store ---
     print(f"\nCreating or updating vector store for collection: '{CHROMA_COLLECTION_NAME}'...")
-    # Set recreate=True if you want to clear the collection and re-ingest every time.
-    # For incremental additions, you'd load existing and add new (more complex logic).
-    # For this POC, recreate=True ensures a fresh state on each run.
+
     try:
         vector_store = create_or_get_vector_store(
             documents=chunked_documents,
             embedding_function=embedding_function,
             collection_name=CHROMA_COLLECTION_NAME, 
-            recreate=True # Set to True for POC to always rebuild
+            recreate=True 
         )
         print(f"Vector store processing complete for collection '{CHROMA_COLLECTION_NAME}'.")
         

@@ -68,6 +68,11 @@ PyMuPDF: A fast and efficient library for PDF text and metadata extraction.
 Streamlit: Chosen for its ability to quickly create interactive and user-friendly Python web applications with minimal front-end code.
 Tavily API: Provides a simple and effective search API with a generous free tier, ideal for adding web search capabilities to a POC.
 
+Agent Functioning:
+Assistant decides to call a function, its message to UserProxy includes function_call.
+UserProxy sees function_call, executes the function from function_map.
+UserProxy sends a message with role function (or tool) containing the result back to Assistant.
+Assistant uses this result to generate its final response.
 
 
 Sample Questions & Responses:

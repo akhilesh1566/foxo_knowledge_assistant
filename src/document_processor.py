@@ -1,5 +1,4 @@
-# src/document_processor.py
-# src/document_processor.py
+
 import os
 import fitz # PyMuPDF
 from typing import List, Dict, Any
@@ -38,7 +37,7 @@ def load_pdfs(pdf_folder_path: str) -> List[Document]:
 
     for filename in pdf_files:
         file_path = os.path.join(pdf_folder_path, filename)
-        pdf_document = None  # Initialize pdf_document to None
+        pdf_document = None
         try:
             print(f"\nProcessing file: {filename}...")
             pdf_document = fitz.open(file_path)
@@ -61,19 +60,17 @@ def load_pdfs(pdf_folder_path: str) -> List[Document]:
                 files_processed_successfully +=1
             else:
                 print(f"No text content found or extracted from {filename}, though file was opened.")
-                # Optionally, still count this as a "processed file" if it opened, 
-                # or count it as an error/warning depending on expectation.
-                # For now, we won't increment files_with_errors here if it just had no text.
+                
                 
         except Exception as e:
             print(f"ERROR processing file {filename}: {e}")
             files_with_errors += 1
         finally:
-            if pdf_document: # Ensure document is closed only if it was successfully opened
+            if pdf_document: 
                 try:
                     pdf_document.close()
                 except Exception as e_close:
-                    # This might happen if it was already closed due to the initial error
+                    
                     print(f"Note: Exception while trying to explicitly close {filename}: {e_close}")
     
     print(f"\n--- PDF Loading Summary ---")
@@ -121,8 +118,7 @@ def chunk_documents(
 if __name__ == '__main__':
     # Example Usage (for testing this module directly)
     print("Testing document_processor.py...")
-    # Assume 'data' folder is in the parent directory of 'src'
-    # For direct execution within src, adjust path or ensure execution from root
+
     current_dir = os.path.dirname(os.path.abspath(__file__))
     project_root = os.path.dirname(current_dir) 
     sample_pdf_folder = os.path.join(project_root, "data")
@@ -145,4 +141,4 @@ if __name__ == '__main__':
                 for chunk in chunked_documents[:2]: # Print details of first two chunks
                     print(f"Chunk content (first 50 chars): {chunk.page_content[:50]}...")
                     print(f"Chunk metadata: {chunk.metadata}")
-                    # Note: RecursiveCharacterTextSplitter adds 'start_index' to metadata
+                    
