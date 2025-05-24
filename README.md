@@ -6,11 +6,11 @@ The Autogen Knowledge Assistant is a Proof of Concept (POC) AI agent designed to
 
 ## Setup Instructions
 
-### 1. Prerequisites
+1. Prerequisites
 *   Python 3.9 or higher (developed and tested with Python 3.11.8).
 *   Git.
 
-### 2. Clone the Repository
+2. Clone the Repository
 ```bash
 git https://github.com/akhilesh1566/foxo_knowledge_assistant.git
 cd foxo_knowledge_assistant
