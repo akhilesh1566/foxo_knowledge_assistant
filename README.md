@@ -2,7 +2,7 @@
 
 ## Overview
 
-The Autogen Knowledge Assistant is a Proof of Concept (POC) AI agent designed to answer questions using internal company documents (PDFs, md and txt) and external tools. It leverages Retrieval-Augmented Generation (RAG) for document-based queries and can also perform calculations and web searches. The agent is built using Python, AutoGen for multi-agent orchestration, LangChain for RAG components, and Streamlit for a simple web interface.
+The Autogen Knowledge Assistant is a AI agent designed to answer questions using internal company documents (PDFs, md and txt) and external tools. It leverages Retrieval-Augmented Generation (RAG) for document-based queries and can also perform calculations and web searches. The agent is built using Python, AutoGen for multi-agent orchestration, LangChain for RAG components, and Streamlit for a simple web interface.
 
 ## Setup Instructions
 
