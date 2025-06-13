@@ -17,6 +17,7 @@ cd foxo_knowledge_assistant
 
 3. Set Up a Virtual Environment
 python -m venv venv
+or py -3.11 -m venv venv
 # Activate depends on your OS:
 # Windows (Git Bash or PowerShell):
 source venv/Scripts/activate
