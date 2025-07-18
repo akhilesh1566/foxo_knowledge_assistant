@@ -185,7 +185,7 @@ User Feedback Mechanism: Allow users to rate answers or correct the agent's tool
 
 *   **Python:** 3.9+ (Developed with 3.11.8)
 *   **Core AI/Agent Frameworks:**
-    *   `pyautogen~=0.2.20`: For multi-agent orchestration and tool use.
+    *   `ag2~=0.2.20`: For multi-agent orchestration and tool use.
     *   `langchain~=0.1.12`: For RAG pipeline components (document loading, splitting, embeddings, vector store integration, prompt templates).
 *   **LLMs & Embeddings:**
     *   `openai~=1.14.3`: For the AutoGen Assistant Agent's reasoning and tool selection (e.g., GPT-3.5-Turbo, GPT-4-Turbo).
